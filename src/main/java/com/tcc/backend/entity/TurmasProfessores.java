@@ -9,22 +9,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Data
 @Entity
-@Table(name = "disponibilidade")
-public class Disponibilidade {
+@Table(name = "turmasprofessores")
+@Data
+public class TurmasProfessores {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professoresid", referencedColumnName = "id")
+    @JoinColumn(name = "turmaid")
+    private Turmas turmas;
+
+    @ManyToOne
+    @JoinColumn(name = "professorid")
     private Professores professores;
-
-    private int diasemana;
-
-    private int horarioinicio;
-    private int horariofim;
     
 }
-

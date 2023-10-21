@@ -2,6 +2,7 @@ package com.tcc.backend.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -46,14 +47,7 @@ public class Professores {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "professores")
     private List<Disponibilidade> disponibilidades;
 
-
-    public Professores orElse(Object object) {
-        return null;
-    }
-
-
-    public boolean isPresent() {
-        return false;
-    }
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "professores")
+    private Set<TurmasProfessores> turmasProfessores;
 
 }
