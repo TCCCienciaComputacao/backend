@@ -148,7 +148,7 @@ public class AulaService {
             CpSolver solver = new CpSolver();
 
             // Define the number of solutions to find
-            final int solutionLimit = 5;
+            final int solutionLimit = 1;
 
             // Create the solution callback object
             final class VarArraySolutionPrinterWithLimit extends CpSolverSolutionCallback {
@@ -159,51 +159,49 @@ public class AulaService {
                     this.allHoras = allHoras;
                     this.allPeriodos = allPeriodos;
                     this.shifts = shifts;
-                    solutionLimit = limit;
                     printedSolutions = new HashSet<>();
                 }
 
                 @Override
                 public void onSolutionCallback() {
-                    // Verifique se a solução já foi impressa
-                    SolutionData data = collectSolutionData();
-                    if (!printedSolutions.contains(data)) {
-                        System.out.printf("Solution #%d:%n", solutionCount);
-                        int linesPrinted = 0;
-                        for (int s : allProfessores) {
-                            for (int n : allPeriodos) {
-                                for (int d : allHoras) {
-                                    if (booleanValue(shifts[n][d][s])) {
-                                        String professorName = professoresDaTurma.get(s).getUsuario().getNome();
-                                        Grade grade = new Grade(professorName, n + 1, d + 1);
-                                        gradesGeradas.add(grade);
+                    if (solutionCount == 0) {
+                        SolutionData data = collectSolutionData();
+                        if (!printedSolutions.contains(data)) {
+                            System.out.printf("Solution #%d:%n", solutionCount);
+                            int linesPrinted = 0;
+                            for (int s : allProfessores) {
+                                for (int n : allPeriodos) {
+                                    for (int d : allHoras) {
+                                        if (booleanValue(shifts[n][d][s])) {
+                                            String professorName = professoresDaTurma.get(s).getUsuario().getNome();
+                                            Grade grade = new Grade(professorName, n + 1, d + 1);
+                                            gradesGeradas.add(grade);
 
-                                        // Imprima a atribuição da aula
-                                        System.out.printf("  Professor %s took period %d at hour %d\n",
-                                                grade.getProfessorName(), grade.getPeriodo(), grade.getHora());
-                                        linesPrinted++;
+                                            // Imprima a atribuição da aula
+                                            System.out.printf("  Professor %s took period %d at hour %d\n",
+                                                    grade.getProfessorName(), grade.getPeriodo(), grade.getHora());
+                                            linesPrinted++;
 
-                                        if (linesPrinted >= 10) {
-                                            break; // Limite a 10 linhas por solução
+                                            if (linesPrinted >= 10) {
+                                                break; // Limite a 10 linhas por solução
+                                            }
                                         }
+                                    }
+                                    if (linesPrinted >= 10) {
+                                        break; // Limite a 10 linhas por solução
                                     }
                                 }
                                 if (linesPrinted >= 10) {
                                     break; // Limite a 10 linhas por solução
                                 }
                             }
-                            if (linesPrinted >= 10) {
-                                break; // Limite a 10 linhas por solução
-                            }
-                        }
 
-                        // Agora, você tem uma lista de aulas geradas (gradesGeradas)
-                        // Adicione a solução à lista de soluções impressas
-                        printedSolutions.add(data);
+                            // Agora, você tem uma lista de aulas geradas (gradesGeradas)
+                            // Adicione a solução à lista de soluções impressas
+                            printedSolutions.add(data);
 
-                        solutionCount++;
-                        if (solutionCount >= solutionLimit) {
-                            System.out.printf("Stop search after %d solutions%n", solutionLimit);
+                            solutionCount++;
+                            System.out.printf("Stop search after %d solutions%n", 1); // Pare a busca após encontrar 1 solução
                             stopSearch();
                         }
                     }
@@ -218,7 +216,6 @@ public class AulaService {
                 private final int[] allPeriodos;
                 private final int[] allHoras;
                 private final BoolVar[][][] shifts;
-                private final int solutionLimit;
                 private Set<SolutionData> printedSolutions;
 
                 // Classe auxiliar para coletar dados da solução
