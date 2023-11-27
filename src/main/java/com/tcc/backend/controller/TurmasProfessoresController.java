@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tcc.backend.dto.TurmasProfessoresDTO;
 import com.tcc.backend.dto.TurmasProfessoresProjection;
 import com.tcc.backend.dto.TurmasProfessoresRequest;
 import com.tcc.backend.entity.TurmasProfessores;
@@ -47,18 +48,19 @@ public class TurmasProfessoresController {
     @PutMapping("/{id}")
     public ResponseEntity<TurmasProfessores> alterarTurmasProfessores(
             @PathVariable Long id,
-            @RequestBody TurmasProfessoresRequest turmasProfessoresRequest) {
+            @RequestBody TurmasProfessoresDTO requestDTO) {
         try {
-            Long turmaId = turmasProfessoresRequest.getTurmaId();
-            Long professorId = turmasProfessoresRequest.getProfessorId();
-            
-            TurmasProfessores turmasProfessoresAtualizado = turmasProfessoresService.alterar(id, turmasProfessoresRequest, turmaId, professorId);
+            Long turmaId = requestDTO.getTurmasId();
+            Long professorId = requestDTO.getProfessoresId();
+
+            TurmasProfessores turmasProfessoresAtualizado = turmasProfessoresService.alterar(id, requestDTO, turmaId,
+                    professorId);
             return ResponseEntity.ok(turmasProfessoresAtualizado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    
+
     @GetMapping("/")
     public ResponseEntity<List<TurmasProfessores>> buscarTodos() {
         List<TurmasProfessores> turmasProfessoresList = turmasProfessoresService.buscarTodos();

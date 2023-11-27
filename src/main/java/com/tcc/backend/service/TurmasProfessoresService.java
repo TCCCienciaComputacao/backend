@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tcc.backend.dto.TurmasProfessoresDTO;
 import com.tcc.backend.dto.TurmasProfessoresProjection;
 import com.tcc.backend.dto.TurmasProfessoresRequest;
 import com.tcc.backend.entity.Professores;
@@ -47,7 +48,7 @@ public class TurmasProfessoresService {
         return turmasProfessoresRepository.save(turmaProfessoresNovo);
     }
 
-    public TurmasProfessores alterar(Long id, TurmasProfessoresRequest turmasProfessoresRequest, Long turmaId, Long professorId) throws Exception {
+    public TurmasProfessores alterar(Long id, TurmasProfessoresDTO requestDTO, Long turmaId, Long professorId) throws Exception {
         if (turmaId == null || professorId == null) {
             throw new Exception("Erro ao encontrar turma ou professor");
         }
